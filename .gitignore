@@ -16,4 +16,4 @@
 
 # Ignore generate binaries
 /sane
-target
+/target

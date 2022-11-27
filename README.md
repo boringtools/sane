@@ -3,6 +3,12 @@ A Git repository structure validation tool that follows a `gitignore` like synta
 
 ## TL;DR
 
+Quick install
+
+```bash
+go install github.com/abhisek/sane@latest
+```
+
 Create a `.sane` file declaring the acceptable repository structure in
 repository root
 
@@ -30,10 +36,10 @@ On successful validation, exit code is `0`.
 3. Validation rules are picked from `.sane` in current directory by default
 4. Only git objects are validated, ignoring unstaged or git ignored paths
 
-## Installation
+## Using Docker
 
 ```bash
-go install https://github.com/abhisek/sane@latest
+docker run -v `pwd`:/app ghcr.io/abhisek/sane:latest -p /app
 ```
 
 ## Usage
