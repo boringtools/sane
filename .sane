@@ -7,6 +7,7 @@ LICENSE
 Makefile
 Dockerfile
 
+# CI/CD config
 .github/workflows/*.yml
 
 # Go module manifest
