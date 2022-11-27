@@ -42,6 +42,9 @@ On successful validation, exit code is `0`.
 docker run -v `pwd`:/app ghcr.io/abhisek/sane:latest -p /app
 ```
 
+> [Multi-arch](https://docs.docker.com/build/building/multi-platform/)
+> container image support is work in progress.
+
 ## Usage
 
 ### Normal Mode
