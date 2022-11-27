@@ -2,6 +2,7 @@ package sane
 
 import (
 	"strings"
+	"sync/atomic"
 
 	"github.com/go-git/go-git/v5/plumbing/format/gitignore"
 )
@@ -26,17 +27,25 @@ func (g *gitIgnoreStyleRule) match(node RepositoryNode) bool {
 		return true
 	}
 
+	var ret bool
 	mr := g.pattern.Match(strings.Split(node.FullPath, "/"), false)
+
 	switch mr {
 	case gitignore.NoMatch:
-		return false
+		ret = false
 	case gitignore.Exclude:
-		return true
+		ret = true
 	case gitignore.Include:
-		return false
+		ret = false
 	default:
-		return false
+		ret = false
 	}
+
+	if ret {
+		atomic.AddUint32(&g.ctr, 1)
+	}
+
+	return ret
 }
 
 func (g *gitIgnoreStyleRule) anyMatch() bool {

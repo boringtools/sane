@@ -42,7 +42,6 @@ func (g *gitRepositoryWalker) Walk(handler RepositoryNodeHandler) error {
 	defer files.Close()
 
 	return files.ForEach(func(f *object.File) error {
-		handler(RepositoryNode{FullPath: f.Name})
-		return nil
+		return handler(RepositoryNode{FullPath: f.Name})
 	})
 }

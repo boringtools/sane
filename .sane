@@ -1,4 +1,9 @@
 README.md
+LICENSE
 main.go
+validate.go
+version.go
+go.mod
+go.sum
 internal/**/*.go
 

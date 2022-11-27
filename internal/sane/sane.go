@@ -1,10 +1,25 @@
 package sane
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
+
+const (
+	REPOSITORY_PATH_PLACEHOLDER  = "$REPOSITORY"
+	REPOSITORY_SANE_DEFAULT_FILE = ".sane"
+)
 
 // Primary entrypoint for validator
 func Execute(config Config) error {
-	Debugf("Executing sane for repository validation")
+	if strings.HasPrefix(config.RulesPath, REPOSITORY_PATH_PLACEHOLDER) {
+		config.RulesPath = strings.Replace(config.RulesPath,
+			REPOSITORY_PATH_PLACEHOLDER, config.RepositoryPath, 1)
+	}
+
+	Infof("Using Repository: %s", config.RepositoryPath)
+	Infof("Using Rule: %s", config.RulesPath)
+
 	repository, err := newGitRepositoryWalker(config.RepositoryPath)
 	if err != nil {
 		return err
@@ -17,8 +32,6 @@ func Execute(config Config) error {
 	}
 
 	violatingPaths := []string{}
-
-	Debugf("Starting repository walk")
 	err = repository.Walk(func(node RepositoryNode) error {
 		ok, err := ruleEngine.Validate(node)
 		if err != nil {
@@ -27,7 +40,7 @@ func Execute(config Config) error {
 
 		if !ok {
 			if config.FailFast {
-				return fmt.Errorf("no rules match for: %s", node.FullPath)
+				return fmt.Errorf("fail-fast: no rules match for: %s", node.FullPath)
 			} else {
 				violatingPaths = append(violatingPaths, node.FullPath)
 			}
@@ -37,7 +50,7 @@ func Execute(config Config) error {
 	})
 
 	if err != nil {
-		return nil
+		return err
 	}
 
 	if len(violatingPaths) > 0 {
@@ -48,12 +61,11 @@ func Execute(config Config) error {
 		return fmt.Errorf("%d paths failed validation", len(violatingPaths))
 	}
 
-	Debugf("Finalizing rule engine")
 	err = ruleEngine.Finalize()
 	if err != nil {
 		return err
 	}
 
-	Debugf("Sane execution completed successfully")
+	Infof("Finished validation")
 	return nil
 }

@@ -30,6 +30,7 @@ func main() {
 	cmd.Flags().BoolVarP(&debug, "debug", "d", false, "Show debug logs")
 
 	cmd.AddCommand(newValidateCommand())
+	cmd.AddCommand(newVersionCommand())
 
 	if err := cmd.Execute(); err != nil {
 		os.Exit(1)

@@ -52,8 +52,6 @@ func (g *gitIgnoreStyleRuleEngine) Validate(node RepositoryNode) (bool, error) {
 	for _, p := range g.gitIgnoreStyleRules {
 		ret = p.match(node)
 
-		Debugf("%s: %t", node.FullPath, ret)
-
 		// First match break out
 		if ret {
 			break
@@ -65,7 +63,6 @@ func (g *gitIgnoreStyleRuleEngine) Validate(node RepositoryNode) (bool, error) {
 
 func (g *gitIgnoreStyleRuleEngine) Finalize() error {
 	var err error = nil
-
 	for _, r := range g.gitIgnoreStyleRules {
 		if g.strict && !r.anyMatch() {
 			err = fmt.Errorf("rule:%s has no match in strict mode", r.rule)
