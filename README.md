@@ -39,7 +39,7 @@ On successful validation, exit code is `0`.
 ## Using Docker
 
 ```bash
-docker run -v `pwd`:/app ghcr.io/abhisek/sane:latest -p /app
+docker run -v `pwd`:/app ghcr.io/abhisek/sane:latest validate -p /app
 ```
 
 > [Multi-arch](https://docs.docker.com/build/building/multi-platform/)
