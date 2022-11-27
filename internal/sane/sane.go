@@ -3,7 +3,8 @@ package sane
 import "fmt"
 
 // Primary entrypoint for validator
-func Execute(config SaneConfig) error {
+func Execute(config Config) error {
+	Debugf("Executing sane for repository validation")
 	repository, err := newGitRepositoryWalker(config.RepositoryPath)
 	if err != nil {
 		return err
@@ -16,6 +17,8 @@ func Execute(config SaneConfig) error {
 	}
 
 	violatingPaths := []string{}
+
+	Debugf("Starting repository walk")
 	err = repository.Walk(func(node RepositoryNode) error {
 		ok, err := ruleEngine.Validate(node)
 		if err != nil {
@@ -38,15 +41,19 @@ func Execute(config SaneConfig) error {
 	}
 
 	if len(violatingPaths) > 0 {
+		for _, path := range violatingPaths {
+			Infof("Failed: %s", path)
+		}
+
 		return fmt.Errorf("%d paths failed validation", len(violatingPaths))
 	}
 
-	if config.Strict {
-		err := ruleEngine.Finalize()
-		if err != nil {
-			return err
-		}
+	Debugf("Finalizing rule engine")
+	err = ruleEngine.Finalize()
+	if err != nil {
+		return err
 	}
 
+	Debugf("Sane execution completed successfully")
 	return nil
 }

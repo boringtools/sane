@@ -6,7 +6,7 @@ const (
 	RULES_FORMAT_GITIGNORE = "gitignore"
 )
 
-type SaneConfig struct {
+type Config struct {
 	RepositoryPath string
 	RulesPath      string
 	RulesType      RuleFormat
@@ -14,9 +14,16 @@ type SaneConfig struct {
 	Strict         bool
 }
 
-type Rule interface {
+type RuleEngine interface {
+	// Validate a single repository node with the loaded rules
+	// This validation should be performed in a stateless manner
 	Validate(RepositoryNode) (bool, error)
+
+	// Finalize the validation state (if any) and return error (if any)
 	Finalize() error
+
+	// Reset validatin state
+	Reset()
 }
 
 type RepositoryNode struct {

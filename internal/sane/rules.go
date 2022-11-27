@@ -10,39 +10,34 @@ const (
 	MaxRules = 1000
 )
 
-type globRule struct {
-	rule string
-	ctr  uint32
+type gitIgnoreStyleRuleEngine struct {
+	gitIgnoreStyleRules []*gitIgnoreStyleRule
+	strict              bool
 }
 
-type globRuleEngine struct {
-	globRules []globRule
-	strict    bool
-}
-
-func newRuleEngine(t RuleFormat, path string, strict bool) (Rule, error) {
+func newRuleEngine(t RuleFormat, path string, strict bool) (RuleEngine, error) {
 	if t != RULES_FORMAT_GITIGNORE {
 		return nil, fmt.Errorf("unsupported rules type: %s", t)
 	}
 
-	return newGlobRuleEngine(path, strict)
+	return newGitIgnoreStyleRuleEngine(path, strict)
 }
 
-func newGlobRuleEngine(path string, strict bool) (Rule, error) {
+func newGitIgnoreStyleRuleEngine(path string, strict bool) (RuleEngine, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open rules: %w", err)
 	}
 
 	scanner := bufio.NewScanner(file)
-	engine := globRuleEngine{
-		globRules: make([]globRule, 0, MaxRules+1),
-		strict:    strict,
+	engine := gitIgnoreStyleRuleEngine{
+		gitIgnoreStyleRules: make([]*gitIgnoreStyleRule, 0, MaxRules+1),
+		strict:              strict,
 	}
 
 	for scanner.Scan() {
-		engine.globRules = append(engine.globRules,
-			globRule{rule: scanner.Text(), ctr: 0})
+		rule := newGitIgnoreStyleRule(scanner.Text())
+		engine.gitIgnoreStyleRules = append(engine.gitIgnoreStyleRules, rule)
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -52,20 +47,35 @@ func newGlobRuleEngine(path string, strict bool) (Rule, error) {
 	return &engine, err
 }
 
-func (g *globRuleEngine) Validate(node RepositoryNode) (bool, error) {
-	fmt.Printf("Validating: %s Against %d rules\n", node.FullPath, len(g.globRules))
-	return true, nil
+func (g *gitIgnoreStyleRuleEngine) Validate(node RepositoryNode) (bool, error) {
+	ret := false
+	for _, p := range g.gitIgnoreStyleRules {
+		ret = p.match(node)
+
+		Debugf("%s: %t", node.FullPath, ret)
+
+		// First match break out
+		if ret {
+			break
+		}
+	}
+
+	return ret, nil
 }
 
-func (g *globRuleEngine) Finalize() error {
+func (g *gitIgnoreStyleRuleEngine) Finalize() error {
 	var err error = nil
 
-	for _, r := range g.globRules {
-		if g.strict && r.ctr == 0 {
+	for _, r := range g.gitIgnoreStyleRules {
+		if g.strict && !r.anyMatch() {
 			err = fmt.Errorf("rule:%s has no match in strict mode", r.rule)
 			break
 		}
 	}
 
 	return err
+}
+
+func (g *gitIgnoreStyleRuleEngine) Reset() {
+	Debugf("Resetting rule engine")
 }

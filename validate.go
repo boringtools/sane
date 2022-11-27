@@ -24,7 +24,7 @@ func newValidateCommand() *cobra.Command {
 		Use: "validate [OPTIONS]",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if err := validate.run(args); err != nil {
-				fmt.Printf("ERROR: %s\n", err.Error())
+				sane.LoggerWithError(err).Errorf("Validation failed")
 				os.Exit(1)
 			}
 
@@ -43,7 +43,8 @@ func newValidateCommand() *cobra.Command {
 }
 
 func (v *validateCommand) run(args []string) error {
-	return sane.Execute(sane.SaneConfig{
+	sane.SetLogLevel(verbose, debug)
+	return sane.Execute(sane.Config{
 		RepositoryPath: v.repoPath,
 		RulesPath:      v.rulesPath,
 		RulesType:      sane.RULES_FORMAT_GITIGNORE,
