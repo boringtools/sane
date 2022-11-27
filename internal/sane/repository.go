@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/object"
 )
 
 type gitRepositoryWalker struct {
@@ -20,6 +21,28 @@ func (g *gitRepositoryWalker) Walk(handler RepositoryNodeHandler) error {
 		return err
 	}
 
-	fmt.Printf("Git repo opened: %v\n", repo)
-	return nil
+	ref, err := repo.Head()
+	if err != nil {
+		return err
+	}
+
+	commit, err := repo.CommitObject(ref.Hash())
+	if err != nil {
+		return fmt.Errorf("no commit object found with head ref hash: %s",
+			ref.Hash().String())
+	}
+
+	tree, err := commit.Tree()
+	if err != nil {
+		return fmt.Errorf("no tree object found from head ref commit hash: %s",
+			commit.Hash.String())
+	}
+
+	files := tree.Files()
+	defer files.Close()
+
+	return files.ForEach(func(f *object.File) error {
+		handler(RepositoryNode{FullPath: f.Name})
+		return nil
+	})
 }

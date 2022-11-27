@@ -15,5 +15,5 @@
 # vendor/
 
 # Ignore generate binaries
-sane
+/sane
 target

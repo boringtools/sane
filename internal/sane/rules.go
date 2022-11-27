@@ -53,6 +53,7 @@ func newGlobRuleEngine(path string, strict bool) (Rule, error) {
 }
 
 func (g *globRuleEngine) Validate(node RepositoryNode) (bool, error) {
+	fmt.Printf("Validating: %s Against %d rules\n", node.FullPath, len(g.globRules))
 	return true, nil
 }
 

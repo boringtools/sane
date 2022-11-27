@@ -16,7 +16,7 @@ func Execute(config SaneConfig) error {
 	}
 
 	violatingPaths := []string{}
-	repository.Walk(func(node RepositoryNode) error {
+	err = repository.Walk(func(node RepositoryNode) error {
 		ok, err := ruleEngine.Validate(node)
 		if err != nil {
 			return err
@@ -32,6 +32,10 @@ func Execute(config SaneConfig) error {
 
 		return nil
 	})
+
+	if err != nil {
+		return nil
+	}
 
 	if len(violatingPaths) > 0 {
 		return fmt.Errorf("%d paths failed validation", len(violatingPaths))
