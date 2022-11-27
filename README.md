@@ -64,7 +64,7 @@ Optionally provide a rules path instead of the default `.sane`
 ## Rules Format
 
 The `.sane` rules format is syntactically similar to `.gitignore` but
-semantically inverse. Refer to [RULES.spec.md](RULES.spec.md) for details.
+semantically inverse. Refer to [RULE.spec.md](RULE.spec.md) for details.
 
 ## FAQ
 
@@ -80,4 +80,4 @@ ignoring the unstaged or ignored files.
 To reduce cognitive load of learning another format and re-use conventional
 syntax of `gitignore` but in an inverse context i.e. `.sane` rules define what
 is acceptable instead of what should be ignored. Refer
-[RULES.spec.md](RULES.spec.md) for more information on rule format
+[RULE.spec.md](RULE.spec.md) for more information on rule format
