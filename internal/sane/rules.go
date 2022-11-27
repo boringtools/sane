@@ -7,13 +7,6 @@ import (
 	"strings"
 )
 
-type MatchingMode uint16
-
-const (
-	MatchingModeFirst = iota
-	MatchingModeLast
-)
-
 const (
 	MaxRules = 1000
 )

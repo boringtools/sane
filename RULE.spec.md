@@ -37,19 +37,19 @@ repository.
 To allow all markdown files in `docs/*.md` except `docs/README.md`
 
 ```text
-!docs/README.md
-docs/*.md
+!/docs/README.md
+/docs/*.md
 ```
 
 The order is required to explicitly disallow `docs/README.md` within first
 match constraints.
 
-* Glob rules are supported e.g. `./docs/**/*.md`
+* Glob rules are supported e.g. `/docs/**/*.md`
 * Only blob objects (files) in a git repository are matched
 * Tree objects (directories) are not matched
 
 To prevent creation of directories
 
 ```text
-!docs/**/*
+!/docs/**/*
 ```

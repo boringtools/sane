@@ -23,7 +23,7 @@ func (g *gitRepositoryWalker) Walk(handler RepositoryNodeHandler) error {
 
 	ref, err := repo.Head()
 	if err != nil {
-		return err
+		return fmt.Errorf("unable to find HEAD reference: %w", err)
 	}
 
 	commit, err := repo.CommitObject(ref.Hash())
