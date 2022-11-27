@@ -3,7 +3,8 @@ A Git repository structure validation tool that follows a `gitignore` like synta
 
 ## TL;DR
 
-Create a `.sane` file declaring the acceptable repository structure
+Create a `.sane` file declaring the acceptable repository structure in
+repository root
 
 ```bash
 README.md
