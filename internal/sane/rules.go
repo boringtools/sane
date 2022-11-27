@@ -42,6 +42,10 @@ func newGitIgnoreStyleRuleEngine(path string, strict bool) (RuleEngine, error) {
 			continue
 		}
 
+		if strings.HasPrefix(line, "#") {
+			continue
+		}
+
 		rule := newGitIgnoreStyleRule(line)
 		engine.gitIgnoreStyleRules = append(engine.gitIgnoreStyleRules, rule)
 	}

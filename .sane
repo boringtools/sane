@@ -1,11 +1,19 @@
+# Docs
 README.md
 RULE.spec.md
 LICENSE
+
+# Build config
 Makefile
-main.go
-validate.go
-version.go
+Dockerfile
+
+.github/workflows/*.yml
+
+# Go module manifest
 go.mod
 go.sum
-internal/**/*.go
+
+# Go source files
+/*.go
+/internal/**/*.go
 
