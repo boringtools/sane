@@ -1,5 +1,7 @@
 README.md
+RULE.spec.md
 LICENSE
+Makefile
 main.go
 validate.go
 version.go

@@ -4,6 +4,14 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
+)
+
+type MatchingMode uint16
+
+const (
+	MatchingModeFirst = iota
+	MatchingModeLast
 )
 
 const (
@@ -36,7 +44,12 @@ func newGitIgnoreStyleRuleEngine(path string, strict bool) (RuleEngine, error) {
 	}
 
 	for scanner.Scan() {
-		rule := newGitIgnoreStyleRule(scanner.Text())
+		line := strings.TrimSpace(scanner.Text())
+		if len(line) == 0 {
+			continue
+		}
+
+		rule := newGitIgnoreStyleRule(line)
 		engine.gitIgnoreStyleRules = append(engine.gitIgnoreStyleRules, rule)
 	}
 
@@ -48,17 +61,30 @@ func newGitIgnoreStyleRuleEngine(path string, strict bool) (RuleEngine, error) {
 }
 
 func (g *gitIgnoreStyleRuleEngine) Validate(node RepositoryNode) (bool, error) {
-	ret := false
+	var ret bool
+	var err error
+
 	for _, p := range g.gitIgnoreStyleRules {
-		ret = p.match(node)
+		result := p.match(node)
+		switch result {
+		case matchResultAllow:
+			ret = true
+			break
+		case matchResultNoMatch:
+			ret = false
+			break
+		case matchResultDeny:
+			err = fmt.Errorf("%s is explicitly denied", node.FullPath)
+			break
+		}
 
 		// First match break out
-		if ret {
+		if ret || (err != nil) {
 			break
 		}
 	}
 
-	return ret, nil
+	return ret, err
 }
 
 func (g *gitIgnoreStyleRuleEngine) Finalize() error {
@@ -74,5 +100,5 @@ func (g *gitIgnoreStyleRuleEngine) Finalize() error {
 }
 
 func (g *gitIgnoreStyleRuleEngine) Reset() {
-	Debugf("Resetting rule engine")
+	// Nothing
 }

@@ -7,6 +7,14 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/format/gitignore"
 )
 
+type matchResult uint16
+
+const (
+	matchResultNoMatch = iota
+	matchResultAllow
+	matchResultDeny
+)
+
 type gitIgnoreStyleRule struct {
 	rule    string
 	ctr     uint32
@@ -22,26 +30,26 @@ func newGitIgnoreStyleRule(pattern string) *gitIgnoreStyleRule {
 	}
 }
 
-func (g *gitIgnoreStyleRule) match(node RepositoryNode) bool {
+func (g *gitIgnoreStyleRule) match(node RepositoryNode) matchResult {
 	if g.isIgnorable(node) {
-		return true
+		return matchResultAllow
 	}
 
-	var ret bool
+	var ret matchResult
 	mr := g.pattern.Match(strings.Split(node.FullPath, "/"), false)
 
 	switch mr {
 	case gitignore.NoMatch:
-		ret = false
+		ret = matchResultNoMatch
 	case gitignore.Exclude:
-		ret = true
+		ret = matchResultAllow
 	case gitignore.Include:
-		ret = false
+		ret = matchResultDeny
 	default:
-		ret = false
+		ret = matchResultNoMatch
 	}
 
-	if ret {
+	if ret == matchResultAllow {
 		atomic.AddUint32(&g.ctr, 1)
 	}
 

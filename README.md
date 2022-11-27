@@ -61,9 +61,14 @@ Optionally provide a rules path instead of the default `.sane`
 ./sane -p /path/to/dir -r /path/to/dir/rules/sane.rules
 ```
 
+## Rules Format
+
+The `.sane` rules format is syntactically similar to `.gitignore` but
+semantically inverse. Refer to [RULES.spec.md](RULES.spec.md) for details.
+
 ## FAQ
 
-### Why couple it with a Git repository?
+### Why couple with a Git repository?
 
 The rule engine is capable of validating any file path against he rules. As
 such the rules are not coupled with a git repository. However, this tool seems
@@ -74,4 +79,5 @@ ignoring the unstaged or ignored files.
 
 To reduce cognitive load of learning another format and re-use conventional
 syntax of `gitignore` but in an inverse context i.e. `.sane` rules define what
-is acceptable instead of what should be ignored
+is acceptable instead of what should be ignored. Refer
+[RULES.spec.md](RULES.spec.md) for more information on rule format

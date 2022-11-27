@@ -8,6 +8,7 @@ import (
 
 func init() {
 	logrus.SetOutput(os.Stdout)
+	logrus.SetLevel(logrus.WarnLevel)
 }
 
 func SetLogLevel(verbose, debug bool) {

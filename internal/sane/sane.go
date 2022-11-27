@@ -19,6 +19,8 @@ func Execute(config Config) error {
 
 	Infof("Using Repository: %s", config.RepositoryPath)
 	Infof("Using Rule: %s", config.RulesPath)
+	Infof("Strict mode: %t", config.Strict)
+	Infof("Fail fast mode: %t", config.FailFast)
 
 	repository, err := newGitRepositoryWalker(config.RepositoryPath)
 	if err != nil {
