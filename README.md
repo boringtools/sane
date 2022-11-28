@@ -59,7 +59,7 @@ jobs:
       - name: Sane Repository Validator
         uses: abhisek/sane@main
         with:
-          path: ./
+          path: .
 ```
 
 ## Usage
