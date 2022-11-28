@@ -57,7 +57,7 @@ func Execute(config Config) error {
 
 	if len(violatingPaths) > 0 {
 		for _, path := range violatingPaths {
-			Infof("Failed: %s", path)
+			Warnf("No rule match: %s", path)
 		}
 
 		return fmt.Errorf("%d paths failed validation", len(violatingPaths))

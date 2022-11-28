@@ -1,0 +1,19 @@
+name: CI
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main ]
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: abhisek/sane@develop
+        with:
+          path: .
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.19'
+      - run: go mod download
+      - run: make test

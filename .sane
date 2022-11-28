@@ -9,6 +9,7 @@ Dockerfile
 
 # CI/CD config
 .github/workflows/*.yml
+action.yml
 
 # Go module manifest
 go.mod
