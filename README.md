@@ -45,6 +45,23 @@ docker run -v `pwd`:/app ghcr.io/abhisek/sane:latest validate -p /app
 > [Multi-arch](https://docs.docker.com/build/building/multi-platform/)
 > container image support is work in progress.
 
+## Using Github Action
+
+```yaml
+name: Sane Repository
+on: [ pull_request ]
+jobs:
+  Sane:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Sane Repository Validator
+        uses: abhisek/sane@main
+        with:
+          path: ./
+```
+
 ## Usage
 
 ### Normal Mode

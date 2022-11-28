@@ -38,6 +38,8 @@ func (g *gitRepositoryWalker) Walk(handler RepositoryNodeHandler) error {
 			commit.Hash.String())
 	}
 
+	Infof("Using ref: %s", ref.Name())
+
 	files := tree.Files()
 	defer files.Close()
 

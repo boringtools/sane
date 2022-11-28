@@ -1,0 +1,22 @@
+name: 'Sane'
+description: 'Git repository structure validator'
+
+inputs:
+  path:
+    description: Repository path to scan
+    required: true
+  extra_args:
+    description: Additional arguments to pass to sane command line
+    required: false
+    default: ""
+branding:
+  icon: "git-branch"
+  color: "green"
+runs:
+  using: "docker"
+  image: "docker://ghcr.io/abhisek/sane:latest"
+  args:
+    - validate
+    - -p
+    - ${{ inputs.path }}
+    - ${{ inputs.extra_args }}

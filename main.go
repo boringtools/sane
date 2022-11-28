@@ -26,8 +26,8 @@ func main() {
 		},
 	}
 
-	cmd.Flags().BoolVarP(&verbose, "verbose", "v", false, "Show verbose logs")
-	cmd.Flags().BoolVarP(&debug, "debug", "d", false, "Show debug logs")
+	cmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Show verbose logs")
+	cmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "Show debug logs")
 
 	cmd.AddCommand(newValidateCommand())
 	cmd.AddCommand(newVersionCommand())
