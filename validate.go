@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/abhisek/sane/internal/sane"
+	"github.com/boringtools/sane/internal/sane"
 	"github.com/spf13/cobra"
 )
 

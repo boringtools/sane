@@ -8,7 +8,7 @@ the structure is intact.
 Quick install
 
 ```bash
-go install github.com/abhisek/sane@latest
+go install github.com/boringtools/sane@latest
 ```
 
 Create a `.sane` file declaring the acceptable repository structure in
@@ -42,7 +42,7 @@ that do not have a matching rule will cause a violation and non-zero exit code.
 ## Using Docker
 
 ```bash
-docker run -v `pwd`:/app ghcr.io/abhisek/sane:latest validate -p /app
+docker run -v `pwd`:/app ghcr.io/boringtools/sane:latest validate -p /app
 ```
 
 > [Multi-arch](https://docs.docker.com/build/building/multi-platform/)
@@ -60,7 +60,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Sane Repository Validator
-        uses: abhisek/sane@main
+        uses: boringtools/sane@main
         with:
           path: .
 ```

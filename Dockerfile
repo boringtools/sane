@@ -14,7 +14,7 @@ FROM gcr.io/distroless/base-debian11
 
 ARG TARGETPLATFORM
 
-LABEL org.opencontainers.image.source=https://github.com/abhisek/sane
+LABEL org.opencontainers.image.source=https://github.com/boringtools/sane
 LABEL org.opencontainers.image.description="Git repository structure validator"
 LABEL org.opencontainers.image.licenses=MIT
 
