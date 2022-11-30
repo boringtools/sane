@@ -12,7 +12,7 @@ RUN make
 
 FROM gcr.io/distroless/base-debian11
 
-ARG TARGETPLATFORM=linux/amd64
+ARG TARGETPLATFORM
 
 LABEL org.opencontainers.image.source=https://github.com/abhisek/sane
 LABEL org.opencontainers.image.description="Git repository structure validator"
