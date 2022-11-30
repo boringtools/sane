@@ -1,5 +1,7 @@
 # Sane: Validate Repository Structure
-A Git repository structure validation tool that follows a `gitignore` like syntax to define a desired repository structure. 
+A Git repository structure validation tool that follows a `gitignore` like syntax 
+to define a desired repository structure. The repository is validated to ensure
+the structure is intact.
 
 ## TL;DR
 
@@ -27,7 +29,8 @@ Run `sane` to validate the current repository structure based on `.sane` file
 sane validate
 ```
 
-On successful validation, exit code is `0`.
+On successful validation, exit code is `0`. Any file(s) added in the repository
+that do not have a matching rule will cause a violation and non-zero exit code.
 
 ### Things to note
 

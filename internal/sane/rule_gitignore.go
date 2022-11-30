@@ -49,7 +49,7 @@ func (g *gitIgnoreStyleRule) match(node RepositoryNode) matchResult {
 		ret = matchResultNoMatch
 	}
 
-	if ret == matchResultAllow {
+	if ret != matchResultNoMatch {
 		atomic.AddUint32(&g.ctr, 1)
 	}
 

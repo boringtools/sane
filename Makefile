@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 GITCOMMIT := $(shell git rev-parse HEAD)
-VERSION := 0.0.1-alpha
+VERSION := "$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)"
 BINARY_NAME := sane
 
 GO := go
