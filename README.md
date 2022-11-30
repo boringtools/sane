@@ -46,7 +46,7 @@ docker run -v `pwd`:/app ghcr.io/abhisek/sane:latest validate -p /app
 ```
 
 > [Multi-arch](https://docs.docker.com/build/building/multi-platform/)
-> container image support is work in progress.
+> container image build is supported for `linux/amd64`, `linux/arm64`
 
 ## Using Github Action
 
