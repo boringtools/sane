@@ -14,7 +14,7 @@ branding:
   color: "green"
 runs:
   using: "docker"
-  image: "docker://ghcr.io/abhisek/sane:latest"
+  image: "docker://ghcr.io/boringtools/sane:latest"
   args:
     - validate
     - -p

@@ -1,4 +1,4 @@
-module github.com/abhisek/sane
+module github.com/boringtools/sane
 
 go 1.18
 
