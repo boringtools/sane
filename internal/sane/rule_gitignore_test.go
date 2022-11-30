@@ -61,6 +61,12 @@ func TestGitIgnoreStyleRuleMatching(t *testing.T) {
 			"docs/a/b/c/d/e.png",
 			matchResultDeny,
 		},
+		{
+			"Deny any file matching pattern",
+			"!*.exe",
+			"docs/a/b/c.exe",
+			matchResultDeny,
+		},
 	}
 
 	for _, test := range cases {

@@ -3,6 +3,7 @@ package sane
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 )
@@ -17,19 +18,25 @@ type gitIgnoreStyleRuleEngine struct {
 }
 
 func newRuleEngine(t RuleFormat, path string, strict bool) (RuleEngine, error) {
-	if t != RULES_FORMAT_GITIGNORE {
-		return nil, fmt.Errorf("unsupported rules type: %s", t)
-	}
-
-	return newGitIgnoreStyleRuleEngine(path, strict)
-}
-
-func newGitIgnoreStyleRuleEngine(path string, strict bool) (RuleEngine, error) {
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open rules: %w", err)
 	}
 
+	defer file.Close()
+	return newRuleEngineWithReader(t, file, strict)
+}
+
+func newRuleEngineWithReader(t RuleFormat, reader io.Reader,
+	strict bool) (RuleEngine, error) {
+	if t != RULES_FORMAT_GITIGNORE {
+		return nil, fmt.Errorf("unsupported rules type: %s", t)
+	}
+
+	return newGitIgnoreStyleRuleEngine(reader, strict)
+}
+
+func newGitIgnoreStyleRuleEngine(file io.Reader, strict bool) (RuleEngine, error) {
 	scanner := bufio.NewScanner(file)
 	engine := gitIgnoreStyleRuleEngine{
 		gitIgnoreStyleRules: make([]*gitIgnoreStyleRule, 0, MaxRules+1),
@@ -54,7 +61,7 @@ func newGitIgnoreStyleRuleEngine(path string, strict bool) (RuleEngine, error) {
 		return nil, fmt.Errorf("failed to read rules: %w", err)
 	}
 
-	return &engine, err
+	return &engine, nil
 }
 
 func (g *gitIgnoreStyleRuleEngine) Validate(node RepositoryNode) (bool, error) {

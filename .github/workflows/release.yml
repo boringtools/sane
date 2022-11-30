@@ -29,8 +29,14 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Setup QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Setup Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
     - name: Build Container Image
-      run: docker build -t $REGISTRY/$IMAGE_NAME:latest .
+      run: docker buildx build --platform linux/amd64,linux/arm64 -t $REGISTRY/$IMAGE_NAME:latest .
 
     - name: Tag Latest Container Images
       run: docker tag $REGISTRY/$IMAGE_NAME:latest $REGISTRY/$IMAGE_NAME:snapshot
