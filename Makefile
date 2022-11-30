@@ -15,7 +15,7 @@ GO_CFLAGS=-X main.GITCOMMIT=$(GITCOMMIT) -X main.VERSION=$(VERSION)
 GO_LDFLAGS=-ldflags "-w $(GO_CFLAGS)"
 
 .PHONY: build
-build: build-linux-amd64 build-linux-arm64 build-darwin-amd64 build-darwin-arm64
+build: build-linux-amd64 build-linux-arm64
 
 .PHONY: build-linux-amd64
 build-linux-amd64:
